@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Alert, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function LoginScreen({ navigation }) {
   const [login, setLogin] = useState('');
   const [senha, setSenha] = useState('');
+  const [erro, setErro] = useState('');
 
   const Login = 'aluno';
   const Senha = 'aluno';
@@ -19,13 +20,15 @@ export default function LoginScreen({ navigation }) {
           }
       } catch (error) {
         console.error('Erro ao verificar o login:', error);
-        Alert.alert('Erro', 'Não foi possível verificar o login. Tente novamente.');}
+        Alert.alert('Erro', 'Não foi possível verificar o login. Tente novamente.');
+        setErro('Não foi possível verificar o login. Tente novamente.');}
     };
 
     verificarLogin();
   }, []);
 
   const handleLogin = () => {
+    setErro('');
     if (login === Login && senha === Senha) {
       navigation.replace('Home');
     try {
@@ -33,15 +36,20 @@ export default function LoginScreen({ navigation }) {
       navigation.navigate('Home');
     } catch (error) {
       console.error('Erro ao salvar o login:', error);
-      Alert.alert('Erro ao salvar o login. Tente novamente.');
+      Alert.alert('Erro ao salvar o login. Tente novamente.')
+      setErro('Erro ao salvar o login. Tente novamente.');
     }
     } else {
-      Alert.alert('Erro', 'Login ou senha incorretos.');
+      Alert.alert('Erro', 'Login ou senha incorretos.')
+      setErro('Login ou senha incorretos.');
     }
   };
 
   return (
     <View style={styles.container}>
+      {erro !== '' && (
+      <Text style={{ color: 'red', marginBottom: 10 }}>{erro}</Text>
+    )}
       <TextInput
         placeholder="Login"
         style={styles.input}
