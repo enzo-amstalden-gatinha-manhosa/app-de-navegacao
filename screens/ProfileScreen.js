@@ -1,9 +1,15 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, Dimensions } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const windowWidth = Dimensions.get('window').width;
 
 export default function ProfileScreen({ navigation }) {
+  
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('UsuarioLogado');
+    navigation.replace('Login');
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Profile Screen</Text>
@@ -12,6 +18,9 @@ export default function ProfileScreen({ navigation }) {
           title="Go Back"
           onPress={() => navigation.goBack()}
         />
+      </View>
+      <View style={{ marginTop: 20 }}>
+        <Button title="Logout" color="red" onPress={handleLogout} />
       </View>
     </View>
   );

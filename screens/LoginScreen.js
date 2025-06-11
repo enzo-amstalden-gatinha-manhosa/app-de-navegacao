@@ -1,15 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function LoginScreen({ navigation }) {
   const [login, setLogin] = useState('');
   const [senha, setSenha] = useState('');
 
+  const Login = 'aluno';
+  const Senha = 'aluno';
+
+  useEffect(() => {
+    const verificarLogin = async () => {
+      try {
+        const UsuarioLogado = await AsyncStorage.getItem('UsuarioLogado');
+          if (UsuarioLogado) {
+            navigation.navigate('Home');
+          }
+      } catch (error) {
+        console.error('Erro ao verificar o login:', error);
+        Alert.alert('Erro', 'Não foi possível verificar o login. Tente novamente.');}
+    };
+
+    verificarLogin();
+  }, []);
+
   const handleLogin = () => {
-    if (login === 'aluno' && senha === 'aluno') {
+    if (login === Login && senha === Senha) {
       navigation.replace('Home');
+    try {
+      AsyncStorage.setItem('UsuarioLogado', 'Logado');
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error('Erro ao salvar o login:', error);
+      Alert.alert('Erro ao salvar o login. Tente novamente.');
+    }
     } else {
-      Alert.alert('Erro', 'Login ou senha incorretos');
+      Alert.alert('Erro', 'Login ou senha incorretos.');
     }
   };
 
