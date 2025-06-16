@@ -7,7 +7,7 @@ Este projeto é um aplicativo React Native criado com Expo, utilizando a navega�
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/app-de-navegacao-main.git
+git clone https://github.com/enzo-amstalden-gatinha-manhosa/app-de-navegacao.git
 cd app-de-navegacao-main
 ```
 
